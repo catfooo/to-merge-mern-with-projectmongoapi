@@ -13,16 +13,39 @@ import booksData from "./data/books.json";
 // import netflixData from "./data/netflix-titles.json";
 // import topMusicData from "./data/top-music.json";
 
-console.log("Before connecting to MongoDB")
+// console.log("Before connecting to MongoDB")
 const mongoUrl = process.env.MONGO_URL || "mongodb://localhost/project-mongo";
-console.log(`Connecting to MongoDB using URL: ${mongoUrl}`)
-mongoose.connect(mongoUrl, { useNewUrlParser: true, useUnifiedTopology: true })
+// console.log(`Connecting to MongoDB using URL: ${mongoUrl}`)
+// mongoose.connect(mongoUrl, { useNewUrlParser: true, useUnifiedTopology: true })
+//   .then((conn) => {
+//     console.log(`MongoDB Connected: ${conn.connection.host}`.cyan.underline);
+//   })
+//   .catch(err => console.error("MongoDB connection error:", err))
+// mongoose.Promise = Promise;
+// console.log("After connecting to MongoDB")
+
+console.log("Before connecting to MongoDB");
+
+const connectOptions = {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  useCreateIndex: true, // Add this option
+};
+
+mongoose
+  .connect(mongoUrl, connectOptions)
   .then((conn) => {
     console.log(`MongoDB Connected: ${conn.connection.host}`.cyan.underline);
   })
-  .catch(err => console.error("MongoDB connection error:", err))
+  .catch((err) => {
+    console.error("MongoDB connection error:", err);
+    process.exit(1); // Exit the process if the connection fails
+  });
+
 mongoose.Promise = Promise;
-console.log("After connecting to MongoDB")
+
+console.log("After connecting to MongoDB");
+
 
 const Book = mongoose.model('Book', {
   bookID: Number,
