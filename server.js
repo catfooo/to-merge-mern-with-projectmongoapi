@@ -17,7 +17,9 @@ console.log("Before connecting to MongoDB")
 const mongoUrl = process.env.MONGO_URL || "mongodb://localhost/project-mongo";
 console.log(`Connecting to MongoDB using URL: ${mongoUrl}`)
 mongoose.connect(mongoUrl, { useNewUrlParser: true, useUnifiedTopology: true })
-  .then(() => console.log("MongoDB Connected"))
+  .then((conn) => {
+    console.log(`MongoDB Connected: ${conn.connection.host}`.cyan.underline);
+  })
   .catch(err => console.error("MongoDB connection error:", err))
 mongoose.Promise = Promise;
 console.log("After connecting to MongoDB")
